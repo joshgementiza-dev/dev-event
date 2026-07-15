@@ -8,7 +8,9 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const Page = async () => {
   console.log("main: page");
   console.log("BASE_URL: ", BASE_URL);
-  const response = await fetch(`${BASE_URL}/api/events`);
+  const response = await fetch(`${BASE_URL}/api/events`, {
+    cache: "no-store", // Disable caching to always fetch fresh data
+  });
   console.log("response:", response);
 
   // console.log(response);
