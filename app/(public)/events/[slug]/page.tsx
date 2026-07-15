@@ -1,5 +1,7 @@
 import BookEvent from "@/components/BookEvent/BookEvent";
+import EventCard from "@/components/EventCard";
 import { IEvent } from "@/database/event.model";
+import { getSimilarEventsBySlug } from "@/lib/actions/event.actions";
 import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
@@ -27,7 +29,10 @@ export default async function EventDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const event = await getEvent(slug);
 
-  console.log(event);
+  const similarEvents = await getSimilarEventsBySlug(slug);
+
+  console.log("similarEvents: ", similarEvents);
+  // console.log("event: ", event);
 
   if (!event) notFound();
 
@@ -148,7 +153,7 @@ export default async function EventDetailPage({ params }: PageProps) {
             </h2>
             <ol>
               {event.agenda.length > 0 ? (
-                JSON.parse(event.agenda[0]).map((item: string, i: number) => (
+                event.agenda.map((item: string, i: number) => (
                   <li key={i} className="flex items-start gap-3 text-sm">
                     <span className="mt-0.5 shrink-0 w-5 h-5 rounded-full bg-brand-muted border border-brand-border text-brand text-[10px] font-bold flex items-center justify-center">
                       {i + 1}
@@ -170,7 +175,7 @@ export default async function EventDetailPage({ params }: PageProps) {
         {/* ── Tags ─────────────────────────────────────────────── */}
         <div className="animate-fade-in flex flex-wrap gap-2 mb-10">
           {event.tags.length > 0
-            ? JSON.parse(event.tags[0]).map((tag: string, i: number) => (
+            ? event.tags.map((tag: string, i: number) => (
                 <span
                   key={i}
                   className="px-3 py-1 rounded-full text-xs font-medium bg-brand-muted border border-brand-border text-brand"
@@ -207,6 +212,27 @@ export default async function EventDetailPage({ params }: PageProps) {
             </div>
           </div>
         </div>
+
+        {/* Scroll track */}
+        {similarEvents.length > 0 && (
+          <div className="mt-10">
+            <h1 className="text-2xl text-white font-bold text-foreground">
+              Similar Events
+            </h1>
+            <div className="relative mt-4">
+              {/* Right-edge fade — hints that more cards exist off-screen */}
+              <div className="absolute right-0 top-0 bottom-4 w-20  z-10 pointer-events-none" />
+
+              <ul className=" max-w-5xl mx-auto flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4  scroll-smooth">
+                {similarEvents.map((event: IEvent) => (
+                  <li key={event.title} className="w-72 shrink-0 snap-start">
+                    <EventCard props={event} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
       </div>
     </main>
   );

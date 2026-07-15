@@ -5,25 +5,25 @@ import styles from "./EventCard.module.css";
 
 export type EventType = "hackathon" | "workshop" | "conference" | "meetup";
 
-const TYPE_LABELS: Record<EventType, string> = {
-  hackathon: "Hackathon",
-  workshop: "Workshop",
-  conference: "Conference",
-  meetup: "Meetup",
-};
+// const TYPE_LABELS: Record<EventType, string> = {
+//   hackathon: "Hackathon",
+//   workshop: "Workshop",
+//   conference: "Conference",
+//   meetup: "Meetup",
+// };
 
 const EventCard = ({ props }: { props: IEvent }) => {
   return (
     <Link href={`/events/${props.slug}`} className={styles.card}>
       {/* Image */}
       <div className={styles.imageWrapper}>
-        {/* <Image
-          src={image}
-          alt={title}
+        <Image
+          src={props.image}
+          alt={props.title}
           fill
           className={styles.image}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-        /> */}
+        />
         {/* <span className={`${styles.badge} badge-${type}`}>
           {TYPE_LABELS[type]}
         </span> */}
@@ -31,7 +31,7 @@ const EventCard = ({ props }: { props: IEvent }) => {
 
       {/* Content */}
       <div className={styles.content}>
-        {/* <p className={styles.title}>{title}</p> */}
+        <p className={styles.title}>{props.title}</p>
 
         <div className={styles.meta}>
           <div className={styles.metaRow}>
@@ -42,7 +42,7 @@ const EventCard = ({ props }: { props: IEvent }) => {
               height={13}
               className={styles.icon}
             />
-            {/* <span>{date}</span> */}
+            <span>{props.date}</span>
           </div>
           <div className={styles.metaRow}>
             <Image
@@ -52,7 +52,7 @@ const EventCard = ({ props }: { props: IEvent }) => {
               height={13}
               className={styles.icon}
             />
-            {/* <span>{location}</span> */}
+            <span>{props.location}</span>
             <span className={styles.separator}>·</span>
             <Image
               src="/icons/mode.svg"
@@ -61,7 +61,7 @@ const EventCard = ({ props }: { props: IEvent }) => {
               height={13}
               className={styles.icon}
             />
-            {/* <span className={styles.capitalize}>{mode}</span> */}
+            <span className={styles.capitalize}>{props.mode}</span>
           </div>
         </div>
       </div>

@@ -52,7 +52,7 @@ const Page = async () => {
         <div className="px-4 md:px-8 max-w-5xl mx-auto flex items-center justify-between mb-5">
           <h3 className="text-xl font-semibold text-white">Featured Events</h3>
           <Link
-            href="/events"
+            href="#"
             className="text-sm font-medium text-brand hover:text-brand-hover transition-colors duration-150"
           >
             View all →
