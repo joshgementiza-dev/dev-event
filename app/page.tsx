@@ -1,16 +1,13 @@
 import EventCard from "@/components/EventCard";
 import ExploreBtn from "@/components/ExploreBtn";
-import { IEvent } from "@/database";
+import { Event } from "@/database";
+import { IEvent } from "@/database/event.model";
+import connectToDatabase from "@/lib/mongodb";
 import Link from "next/link";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-
 const Page = async () => {
-  const response = await fetch(`${BASE_URL}/api/events`);
-  // console.log(response);
-  const { events } = await response.json();
-  console.log("events:", events);
-  // const { events } = await response.json();
+  await connectToDatabase();
+  const events = (await Event.find().sort({ date: 1 }).limit(10).lean()) as unknown as IEvent[];
 
   return (
     <section className="flex flex-col mt-5 ">
