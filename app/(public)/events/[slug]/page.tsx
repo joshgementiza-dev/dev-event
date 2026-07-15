@@ -2,20 +2,17 @@ import BookEvent from "@/components/BookEvent/BookEvent";
 import EventCard from "@/components/EventCard";
 import { IEvent } from "@/database/event.model";
 import { getSimilarEventsBySlug } from "@/lib/actions/event.actions";
-import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
-async function getEvent(slug: string): Promise<IEvent | null> {
-  const headersList = await headers();
-  const host = headersList.get("host") ?? "localhost:3000";
-  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-  const res = await fetch(`${protocol}://${host}/api/events/${slug}`, {
-    cache: "no-store",
+async function getEvent(slug: string): Promise<IEvent | null> {
+  const res = await fetch(`${BASE_URL}/api/events/${slug}`, {
+    cache: "no-store", // Disable caching to always fetch fresh data
   });
 
   if (res.status === 404) return null;
@@ -26,13 +23,13 @@ async function getEvent(slug: string): Promise<IEvent | null> {
 }
 
 export default async function EventDetailPage({ params }: PageProps) {
+  console.log("test");
   const { slug } = await params;
   const event = await getEvent(slug);
 
-  const similarEvents = await getSimilarEventsBySlug(slug);
+  console.log("event: ", event);
 
-  console.log("similarEvents: ", similarEvents);
-  // console.log("event: ", event);
+  const similarEvents = await getSimilarEventsBySlug(slug);
 
   if (!event) notFound();
 
