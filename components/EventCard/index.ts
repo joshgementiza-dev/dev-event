@@ -1,2 +1,2 @@
-export { default } from "./EventCard"
-export type { EventCardProps, EventType } from "./EventCard"
+export { default } from "./EventCard";
+export type { EventType } from "./EventCard";

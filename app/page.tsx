@@ -1,9 +1,17 @@
-import EventCard from "@/components/EventCard/EventCard";
+import EventCard from "@/components/EventCard";
 import ExploreBtn from "@/components/ExploreBtn";
-import { mockEvents } from "@/lib/mock/eventmock";
+import { IEvent } from "@/database";
 import Link from "next/link";
 
-const Page = () => {
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
+const Page = async () => {
+  const response = await fetch(`${BASE_URL}/api/events`);
+  // console.log(response);
+  const { events } = await response.json();
+  console.log("events:", events);
+  // const { events } = await response.json();
+
   return (
     <section className="flex flex-col mt-5 ">
       {/* ── Hero ─────────────────────────────────────────────── */}
@@ -57,9 +65,9 @@ const Page = () => {
           <div className="absolute right-0 top-0 bottom-4 w-20  z-10 pointer-events-none" />
 
           <ul className="px-4 md:px-8 max-w-5xl mx-auto flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4  scroll-smooth">
-            {mockEvents.map((event) => (
-              <li key={event.id} className="w-72 shrink-0 snap-start">
-                <EventCard {...event} />
+            {events.map((event: IEvent) => (
+              <li key={event.title} className="w-72 shrink-0 snap-start">
+                <EventCard props={event} />
               </li>
             ))}
           </ul>
